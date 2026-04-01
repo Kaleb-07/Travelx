@@ -1,16 +1,25 @@
-const mongoose = require('mongoose');
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../config/db');
+const User = require('./User');
 
-const bookingSchema = new mongoose.Schema({
-  userId:      { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  destination: { type: String, required: true },
-  location:    { type: String, required: true },
-  checkin:     { type: Date, required: true },
-  checkout:    { type: Date, required: true },
-  guests:      { type: Number, required: true, min: 1 },
-  roomType:    { type: String, enum: ['Standard', 'Deluxe', 'Suite', 'Villa'], required: true },
-  totalPrice:  { type: String, required: true },
-  status:      { type: String, default: 'Confirmed' },
-  createdAt:   { type: Date, default: Date.now }
+const Booking = sequelize.define('Booking', {
+  id:          { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+  userId:      { type: DataTypes.INTEGER, allowNull: false },
+  destination: { type: DataTypes.STRING, allowNull: false },
+  location:    { type: DataTypes.STRING, allowNull: false },
+  checkin:     { type: DataTypes.DATE, allowNull: false },
+  checkout:    { type: DataTypes.DATE, allowNull: false },
+  guests:      { type: DataTypes.INTEGER, allowNull: false },
+  roomType:    { type: DataTypes.ENUM('Standard', 'Deluxe', 'Suite', 'Villa'), allowNull: false },
+  totalPrice:  { type: DataTypes.STRING, allowNull: false },
+  status:      { type: DataTypes.STRING, defaultValue: 'Confirmed' },
+}, {
+  timestamps: true,
+  createdAt: 'createdAt',
+  updatedAt: false,
 });
 
-module.exports = mongoose.model('Booking', bookingSchema);
+User.hasMany(Booking, { foreignKey: 'userId' });
+Booking.belongsTo(User, { foreignKey: 'userId' });
+
+module.exports = Booking;

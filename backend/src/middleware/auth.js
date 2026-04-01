@@ -21,7 +21,7 @@ function authMiddleware(req, res, next) {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.userId = decoded.userId;
+    req.userId = Number(decoded.userId);
     next();
   } catch (err) {
     if (err.name === 'TokenExpiredError') {

@@ -1,10 +1,15 @@
 const User = require('../models/User');
 
+function safeUser(user) {
+  const { passwordHash, ...rest } = user.toJSON();
+  return rest;
+}
+
 async function getMe(req, res) {
   try {
-    const user = await User.findById(req.userId);
+    const user = await User.findByPk(req.userId);
     if (!user) return res.status(404).json({ message: 'User not found' });
-    res.status(200).json(user);
+    res.status(200).json(safeUser(user));
   } catch (err) {
     res.status(500).json({ message: 'Internal server error' });
   }
@@ -19,13 +24,11 @@ async function updateMe(req, res) {
     if (country !== undefined) updates.country = country;
     if (imageUrl !== undefined) updates.imageUrl = imageUrl;
 
-    const user = await User.findByIdAndUpdate(
-      req.userId,
-      updates,
-      { new: true, runValidators: true }
-    );
+    const user = await User.findByPk(req.userId);
     if (!user) return res.status(404).json({ message: 'User not found' });
-    res.status(200).json(user);
+
+    await user.update(updates);
+    res.status(200).json(safeUser(user));
   } catch (err) {
     res.status(500).json({ message: 'Internal server error' });
   }

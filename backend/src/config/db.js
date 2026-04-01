@@ -1,13 +1,21 @@
-const mongoose = require('mongoose');
+const { Sequelize } = require('sequelize');
+
+const sequelize = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
+  {
+    host: process.env.DB_HOST || 'localhost',
+    port: process.env.DB_PORT || 3306,
+    dialect: 'mysql',
+    logging: false,
+  }
+);
 
 async function connectDB() {
-  try {
-    await mongoose.connect(process.env.MONGODB_URI);
-    console.log('MongoDB connected successfully');
-  } catch (err) {
-    console.error('MongoDB connection error:', err.message);
-    process.exit(1);
-  }
+  await sequelize.authenticate();
+  await sequelize.sync({ alter: true }); // creates/updates tables automatically
+  console.log('MySQL connected and tables synced');
 }
 
-module.exports = connectDB;
+module.exports = { sequelize, connectDB };

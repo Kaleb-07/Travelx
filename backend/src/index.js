@@ -2,12 +2,15 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
-const connectDB = require('./config/db');
+const { connectDB } = require('./config/db');
 
 const app = express();
 
-// Connect to MongoDB
-connectDB();
+// Connect to MySQL
+connectDB().catch(err => {
+  console.error('Failed to connect to MySQL:', err);
+  process.exit(1);
+});
 
 // Middleware
 app.use(cors());
