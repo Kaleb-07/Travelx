@@ -16,7 +16,7 @@ connectDB().catch(err => {
 app.use(cors());
 app.use(express.json());
 
-// Route mounting stubs
+// Route Mounting Stubs
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/bookings', require('./routes/bookings'));
 app.use('/api/users', require('./routes/users'));
