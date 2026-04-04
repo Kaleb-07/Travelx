@@ -6,7 +6,7 @@ const { connectDB } = require('./config/db');
 
 const app = express();
 
-// Connect to MySQL
+// Connect To MySQL
 connectDB().catch(err => {
   console.error('Failed to connect to MySQL:', err);
   process.exit(1);
