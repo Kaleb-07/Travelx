@@ -89,7 +89,7 @@ export default function HomePage() {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  // Booking modal state
+  // the Booking modal state
   const [modal, setModal] = useState({ isOpen: false, destination: '', location: '', basePrice: 0 });
   const [confirmedBooking, setConfirmedBooking] = useState(null);
 
