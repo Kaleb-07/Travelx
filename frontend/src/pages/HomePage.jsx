@@ -93,7 +93,7 @@ export default function HomePage() {
   const [modal, setModal] = useState({ isOpen: false, destination: '', location: '', basePrice: 0 });
   const [confirmedBooking, setConfirmedBooking] = useState(null);
 
-  // Testimonials
+  // the Testimonials
   const [activeTestimonial, setActiveTestimonial] = useState(0);
 
   // Search form
